@@ -4,7 +4,7 @@
 #include "IOHeader.h"
 using namespace std;
 char type[2];
-int main(int argc, char* argv[1])
+int main(int argc, char** argv)
 {
 
     unsigned int H, W;
