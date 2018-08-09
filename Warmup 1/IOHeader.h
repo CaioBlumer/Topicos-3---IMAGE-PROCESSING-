@@ -98,9 +98,9 @@ void changecolor(unsigned char *data, unsigned int W, unsigned int H, char* type
         {
             if ((data[i] - data[i+1])>0)
             {
-                data[i] = 0;
+                data[i] = 255;
                 data[i+1] = 255;
-                data[i+2] = 0;
+                data[i+2] = 255;
             }
         }
     }
