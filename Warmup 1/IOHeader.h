@@ -75,7 +75,8 @@ void inverted(unsigned char *data, unsigned int W, unsigned int H, char* type)
     }
     if(type[1] == '3')
     {
-        for(int i=0; i<H*3; i++)
+        for(int i=0; i<H*3; i++)  //verificar H*3
+        {
             for(int j=0; j<W; j++)
             {
                 for(int k=0; k<3; k++)
@@ -84,7 +85,26 @@ void inverted(unsigned char *data, unsigned int W, unsigned int H, char* type)
                     data[index] = 255 - data[index];
                 }
             }
+        }
     }
 }
+
+void changecolor(unsigned char *data, unsigned int W, unsigned int H, char* type)
+{
+    int index;
+    if(type[1] == '3')
+    {
+        for(int i =0; i < H*W*3 ; i+=3)   //percorrendo o vetor de uma forma diferente
+        {
+            if ((data[i] - data[i+1])>0)
+            {
+                data[i] = 0;
+                data[i+1] = 255;
+                data[i+2] = 0;
+            }
+        }
+    }
+}
+
 
 #endif // IOHEADER_H_INCLUDED
