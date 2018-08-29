@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "IOHeader.h"
-#include <math.h>
+#include <cmath>
 using namespace std;
 char type[2];
 int main(int argc, char** argv)
@@ -14,21 +14,30 @@ int main(int argc, char** argv)
     unsigned char *data = ReadPGM(argv[1], W, H, type);
     if(argc != 2)
     {
-        printf("Input arguments error. Input should be <executable file.pgm>\n");
+        cout<<"Input arguments error. Input should be <executable file.pgm>"<<endl;
         return 1;
     }
 
     cout << "-- IMG PROCESSING --"<<endl;
-    cout << "1 - Invert color"<<endl;
-    cout << "2 - Change color(red)"<<endl;
+    cout << "1 - Square"<<endl;
+    cout << "2 - Sphere"<<endl;
+    cout << "3 - k-neighbours (Requires file sphereset.txt)"<<endl;
+    cout << "4 - Mahalanobis  (Requires file dataset.txt)"<<endl;
     cin >> c;
+
     switch (c)
     {
-    case 1 :
-        mahalanobis(data, W, H, type);
+    case 1:
+        square(data, W, H, type);
         break;
-    case 2 :
-      //  changecolor(data, W, H, type);
+    case 2:
+        sphere(data, W, H, type);
+        break;
+    case 3:
+        kneighbor(data, W, H, type);
+        break;
+    case 4:
+        mahalanobis(data, W, H, type);
         break;
     default:
         cout << "Invalid option" << endl;
