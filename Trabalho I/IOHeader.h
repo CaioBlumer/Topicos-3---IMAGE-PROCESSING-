@@ -136,9 +136,9 @@ void kneighbor(unsigned char *data, unsigned int W, unsigned int H, char* type)
         }
         else
         {
-            data[i]   = 0;
-            data[i+1] = 0;
-            data[i+2] = 0;
+            //data[i]   = 0;
+            //data[i+1] = 0;
+            //data[i+2] = 0;
         }
     }
 }
@@ -185,7 +185,7 @@ void mahalanobis(unsigned char *data, unsigned int W, unsigned int H, char* type
     }
     sigma[1][0] = sigma[0][1];
     sigma[2][1] = sigma[1][2];
-    sigma[2][0] = sigma[0][2]; //Covarience matrix(sigma) created through a dumb method
+    sigma[2][0] = sigma[0][2];
 
     for(int i=0; i<3; i++)
     {
@@ -221,14 +221,14 @@ void mahalanobis(unsigned char *data, unsigned int W, unsigned int H, char* type
         {
             for(int j = 0; j<3; j++)
             {
-                temp[i] += m[i] * minv[i][j];
+                temp[i] += m[j] * minv[i][j];
             }
         }
         for(int l = 0; l<3; l++)
         {
             dist += temp[l] * m[l];
         }
-        if(dist < 1)
+        if(sqrt(dist) < 3)
         {
             data[h] = 255;
             data[h+1] = 255;
