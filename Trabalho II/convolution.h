@@ -1,5 +1,8 @@
 #ifndef IOHEADER_H_INCLUDED
 #define IOHEADER_H_INCLUDED
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 unsigned char* ReadPGM(const char* filename, unsigned int &W, unsigned int &H, char* type)
 {
     FILE* fp = fopen(filename, "r");
@@ -57,5 +60,42 @@ bool SavePGM(const char* filename, unsigned char *data, unsigned int W, unsigned
     }
     fclose(fp);
     return data;
+}
+
+unsigned int** ReadK(const char* filename)
+{
+  FILE* fp = fopen(filename, "r");
+  long length;
+  unsigned int** kernel;
+  if(!fp)
+      return NULL;
+
+  fseek(fp, 0, SEEK_END);
+  length = ftell(fp);
+
+  length = sqrt(length); //continuar codigo
+
+  kernel = (unsigned int **)malloc( length * sizeof(unsigned int*));
+  for (size_t i = 0; i < length; i++) {
+    kernel[i] = (unsigned int *)malloc(length * sizeof(unsigned int));
+  }
+
+  for (size_t i = 0; i < length; i++)
+  {
+    for (size_t j = 0; j < length; j++)
+    {
+      fscanf(fp, "%d ", &kernel[i][j]);
+    }
+  }
+
+  for (size_t i = 0; i < length; i++)
+  {
+    for (size_t j = 0; j < length; j++)
+    {
+      printf("%d ",kernel[i][j]);
+    }
+      printf("\n");
+  }
+
 }
 #endif // IOHEADER_H_INCLUDED
