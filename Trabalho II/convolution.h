@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <cstdio>
 unsigned char* ReadPGM(const char* filename, unsigned int &W, unsigned int &H, char* type)
 {
     FILE* fp = fopen(filename, "r");
@@ -62,40 +63,74 @@ bool SavePGM(const char* filename, unsigned char *data, unsigned int W, unsigned
     return data;
 }
 
-unsigned int** ReadK(const char* filename)
+int** ReadK(const char* filename, int length)
 {
-  FILE* fp = fopen(filename, "r");
-  long length;
-  unsigned int** kernel;
-  if(!fp)
-      return NULL;
+    FILE* fp2 = fopen(filename, "r");
+    int** kernel;
+    if(!fp2)
+        return NULL;
 
-  fseek(fp, 0, SEEK_END);
-  length = ftell(fp);
-
-  length = sqrt(length); //continuar codigo
-
-  kernel = (unsigned int **)malloc( length * sizeof(unsigned int*));
-  for (size_t i = 0; i < length; i++) {
-    kernel[i] = (unsigned int *)malloc(length * sizeof(unsigned int));
-  }
-
-  for (size_t i = 0; i < length; i++)
-  {
-    for (size_t j = 0; j < length; j++)
+    kernel = (int **)malloc(length * sizeof(int*));
+    for (size_t i = 0; i < length; i++)
     {
-      fscanf(fp, "%d ", &kernel[i][j]);
+        kernel[i] = (int *)malloc(length * sizeof(int));
     }
-  }
-
-  for (size_t i = 0; i < length; i++)
-  {
-    for (size_t j = 0; j < length; j++)
+    rewind(fp2);
+    for(unsigned int i = 0; i < length; i++)
     {
-      printf("%d ",kernel[i][j]);
+        for (unsigned int j = 0; j < length; j++)
+        {
+            fscanf(fp2, "%d ", &kernel[i][j]);
+        }
     }
-      printf("\n");
-  }
+    return kernel;
+}
 
+void convolution(unsigned char *data, unsigned int w, unsigned int h, char* type, int **kernel, unsigned int it, int msize)
+{
+    int k = 0;
+    int mean = 0;
+    unsigned char* out = (unsigned char*) calloc(w*h, sizeof(unsigned int));
+    unsigned int index;
+    int temp = 0;
+
+    for(int i = 0; i < msize; i++)
+    {
+        for(int j = 0; j < msize; j++)
+        {
+            mean += kernel[i][j];
+        }
+    }
+    if(mean ==0)
+        mean = 1;
+    while(k < it)
+    {
+            for(int i = (msize-1)/2; i < h-((msize-1)/2); i++)
+            {
+                for(int j = ((msize-1)/2); j < w-((msize-1)/2); j++)
+                {
+                    for(int c = 0; c < msize; c++)
+                    {
+                        for(int l = 0; l < msize; l++)
+                        {
+                            index = w*(i+c-((msize-1)/2))+ j+l-((msize-1)/2);
+                            temp += kernel[c][l] * data[index];
+                        }
+                    }
+                    index = i*w+j;
+                    if (temp/mean < 0) out[index] =0;
+                    else if (temp/mean > 255) out[index] = 255;
+                    else out[index] = temp/mean;
+                    temp = 0;
+                }
+            }
+        k++;
+        for (int i=0; i<h; i++)
+        {
+            for(int j=0;j<w;j++)
+                data[i*w+j] = out[i*w+j];
+        }
+    }
+    free(out);
 }
 #endif // IOHEADER_H_INCLUDED
