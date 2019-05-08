@@ -1,0 +1,3 @@
+/home/spyfox/Desktop/Topicos-3---IMAGE-PROCESSING-/trabalho V/build/CMakeFiles/edit_cache.dir
+/home/spyfox/Desktop/Topicos-3---IMAGE-PROCESSING-/trabalho V/build/CMakeFiles/rebuild_cache.dir
+/home/spyfox/Desktop/Topicos-3---IMAGE-PROCESSING-/trabalho V/build/CMakeFiles/detect.dir
